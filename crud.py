@@ -36,6 +36,7 @@ def get_user(user_id):
                 cur.close()
                 connection.close()
 
+#To do
 @app.route('/api/v1.0/users/<string:nickname>/<string:name>/<string:email>/<int:adminFlag>', methods=['GET'])
 def create_user(nickname,name,email,adminFlag):
     connection = mysql.connect()
