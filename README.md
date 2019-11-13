@@ -3,3 +3,6 @@ Section A of Web Engineering REST project 2019/2020, UMA University
 
 **Useful stuff for the team**
 
+Tutorial: 
+
+https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
