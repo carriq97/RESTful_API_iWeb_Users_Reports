@@ -50,7 +50,7 @@ def create_user():
         _adminFlag = request.args.get('adminFlag')
         if _id and _nickname and _name and _email and _adminFlag:
             sql = "INSERT INTO usertable(id,nickname,name,email,adminFlag) VALUES(%s,%s,%s,%s,%s)"
-            data = (_id,_nickname,_name,_email,_adminFlag)
+            data = (_id, _nickname, _name, _email, _adminFlag)
             cursor.execute(sql, data)
             connection.commit()
             resp = jsonify('Done!')
@@ -64,8 +64,9 @@ def create_user():
         cursor.close()
         connection.close()
 
+
 @app.route('/api/v1.0/users/update', methods=['POST'])
-def update():
+def update_user():
     connection = mysql.connect()
     cursor = connection.cursor()
     try:
@@ -76,7 +77,7 @@ def update():
         _adminFlag = request.args.get('adminFlag')
         if _id and _nickname and _name and _email and _adminFlag:
             sql = "UPDATE usertable SET nickname = %s, name = %s, email = %s, adminFlag = %s WHERE id = %s"
-            data = (_nickname,_name,_email,_adminFlag,_id)
+            data = (_nickname, _name, _email, _adminFlag, _id)
             cursor.execute(sql, data)
             connection.commit()
             resp = jsonify('Done!')
@@ -89,6 +90,24 @@ def update():
     finally:
         cursor.close()
         connection.close()
+
+
+@app.route('/api/v1.0/users/delete/<int:user_id>', methods=['GET'])
+def delete_user(user_id):
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("DELETE FROM userTable WHERE id = %s", user_id)
+        connection.commit()
+        resp = jsonify('Done!')
+        resp.status_code = 200
+        return resp
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
 
 @app.errorhandler(404)
 def not_found(error=None):
