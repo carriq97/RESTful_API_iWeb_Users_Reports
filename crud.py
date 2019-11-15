@@ -64,6 +64,31 @@ def create_user():
         cursor.close()
         connection.close()
 
+@app.route('/api/v1.0/users/update', methods=['POST'])
+def update():
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    try:
+        _id = request.args.get('id')
+        _nickname = request.args.get('nickname')
+        _name = request.args.get('name')
+        _email = request.args.get('email')
+        _adminFlag = request.args.get('adminFlag')
+        if _id and _nickname and _name and _email and _adminFlag:
+            sql = "UPDATE usertable SET nickname = %s, name = %s, email = %s, adminFlag = %s WHERE id = %s"
+            data = (_nickname,_name,_email,_adminFlag,_id)
+            cursor.execute(sql, data)
+            connection.commit()
+            resp = jsonify('Done!')
+            resp.status_code = 201
+            return resp
+        else:
+            return not_found()
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
 
 @app.errorhandler(404)
 def not_found(error=None):
