@@ -1,14 +1,14 @@
-import pymysql
 from app import app
+from error_handler import not_found
 from dbconfig import mysql
-from flask import jsonify, flash, request
+from flask import jsonify, request
 
 
 @app.route('/api/v1.0/users', methods=['GET'])
 def get_users():
+    connection = mysql.connect()
+    cursor = connection.cursor()
     try:
-        connection = mysql.connect()
-        cursor = connection.cursor()
         cursor.execute('SELECT * from usertable')
         rows = cursor.fetchall()
         resp = jsonify(rows)
@@ -22,12 +22,63 @@ def get_users():
 
 
 @app.route('/api/v1.0/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
+def get_user_by_id(user_id):
+    connection = mysql.connect()
+    cursor = connection.cursor()
     try:
-        connection = mysql.connect()
-        cursor = connection.cursor(pymysql.cursors.DictCursor)
         cursor.execute("SELECT * from usertable WHERE id = %s", user_id)
         rows = cursor.fetchall()
+        resp = jsonify(rows)
+        resp.status_code = 200
+        return resp
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route('/api/v1.0/users/paramSearch/email/<string:user_email>', methods=['GET'])
+def get_user_by_email(user_email):
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT * FROM userTable WHERE email = %s", user_email)
+        rows = cursor.fetchall()
+        resp = jsonify(rows)
+        resp.status_code = 200
+        return resp
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route('/api/v1.0/users/paramSearch/text/<string:user_text>', methods=['GET'])
+def get_user_by_text(user_text):
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT * FROM userTable WHERE nickname LIKE %s", ('%' + user_text + '%'))
+        rows = cursor.fetchall()
+        resp = jsonify(rows)
+        resp.status_code = 200
+        return resp
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route('/api/v1.0/users/paramSearch/nickname/<string:user_nickname>', methods=['GET'])
+def get_user_by_nickname(user_nickname):
+    connection = mysql.connect()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT * FROM userTable WHERE nickname = %s", user_nickname)
+        rows = cursor.fetchone()
         resp = jsonify(rows)
         resp.status_code = 200
         return resp
@@ -107,17 +158,6 @@ def delete_user(user_id):
     finally:
         cursor.close()
         connection.close()
-
-
-@app.errorhandler(404)
-def not_found(error=None):
-    message = {
-        'status': 404,
-        'message': 'Not Found: ' + request.url,
-    }
-    resp = jsonify(message)
-    resp.status_code = 404
-    return resp
 
 
 if __name__ == '__main__':
