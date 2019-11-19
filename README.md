@@ -1,8 +1,15 @@
-# RESTful_API_iWeb_Users_Reports
-Section A of Web Engineering REST project 2019/2020, UMA University
+# RESTful_API_iWeb
+Web Engineering REST project 2019/2020, UMA University
 
 **Useful stuff for the team**
 
-Tutorial: 
+Learning - flask:
+https://pythonise.com/series/learning-flask
 
-https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
+**[DONE]** RESTful API users/reports based on MySQL table
+
+**[PENDING]** RESTful API datosabiertos using OpenAPI
+
+**[PENDING]** Client application using our 2 rest services and 2 external ones
+
+**[PENDING]** OAuth 2.0 as identification for the users
