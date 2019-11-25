@@ -1,10 +1,12 @@
-from app import app
-from dbconfig import mysql
-from flask import jsonify, request
-from error_handler import not_found
+from app.dbconfig import mysql
+from flask import jsonify, request, Blueprint
+from app.app import not_found
 
 
-@app.route('/api/v1.0/reports', methods=['GET'])
+reportBP = Blueprint('report', __name__)
+
+
+@reportBP.route('/api/v1.0/reports', methods=['GET'])
 def get_reports():
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -21,7 +23,7 @@ def get_reports():
         connection.close()
 
 
-@app.route('/api/v1.0/reports/<int:report_id>', methods=['GET'])
+@reportBP.route('/api/v1.0/reports/<int:report_id>', methods=['GET'])
 def get_reports_by_id(report_id):
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -38,7 +40,7 @@ def get_reports_by_id(report_id):
         connection.close()
 
 
-@app.route('/api/v1.0/reports/text/<string:report_text>', methods=['GET'])
+@reportBP.route('/api/v1.0/reports/text/<string:report_text>', methods=['GET'])
 def get_reports_by_text(report_text):
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -55,7 +57,7 @@ def get_reports_by_text(report_text):
         connection.close()
 
 
-@app.route('/api/v1.0/reports/add', methods=['POST'])
+@reportBP.route('/api/v1.0/reports/add', methods=['POST'])
 def create_report():
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -81,7 +83,7 @@ def create_report():
         connection.close()
 
 
-@app.route('/api/v1.0/reports/update', methods=['POST'])
+@reportBP.route('/api/v1.0/reports/update', methods=['POST'])
 def update_report():
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -107,7 +109,7 @@ def update_report():
         connection.close()
 
 
-@app.route('/api/v1.0/reports/delete/<int:report_id>', methods=['GET'])
+@reportBP.route('/api/v1.0/reports/delete/<int:report_id>', methods=['GET'])
 def delete_report(report_id):
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -124,7 +126,7 @@ def delete_report(report_id):
         connection.close()
 
 
-@app.route('/api/v1.0/reports/user/<string:user_id>', methods=['GET'])
+@reportBP.route('/api/v1.0/reports/user/<string:user_id>', methods=['GET'])
 def get_reports_by_user(user_id):
     connection = mysql.connect()
     cursor = connection.cursor()
@@ -141,5 +143,3 @@ def get_reports_by_user(user_id):
         connection.close()
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
