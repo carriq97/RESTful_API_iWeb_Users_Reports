@@ -25,7 +25,7 @@ def get_users():
 def get_user_by_id(user_id):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('SELECT * from usertable WHERE id = %s', user_id)
+        cursor.execute('SELECT * from usertable WHERE id = %s', [user_id])
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
@@ -40,7 +40,7 @@ def get_user_by_id(user_id):
 def get_user_by_email(user_email):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('SELECT * FROM userTable WHERE email = %s', user_email)
+        cursor.execute('SELECT * FROM userTable WHERE email = %s', [user_email])
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
@@ -55,7 +55,7 @@ def get_user_by_email(user_email):
 def get_user_by_text(user_text):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('SELECT * FROM userTable WHERE nickname LIKE %s', ('%' + user_text + '%'))
+        cursor.execute('SELECT * FROM userTable WHERE nickname LIKE %s', ['%' + user_text + '%'])
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
@@ -70,7 +70,7 @@ def get_user_by_text(user_text):
 def get_user_by_nickname(user_nickname):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute("SELECT * FROM userTable WHERE nickname = %s", user_nickname)
+        cursor.execute("SELECT * FROM userTable WHERE nickname = %s", [user_nickname])
         rows = cursor.fetchone()
         resp = jsonify(rows)
         resp.status_code = 200
@@ -131,11 +131,11 @@ def update_user():
         cursor.close()
 
 
-@userBP.route('/api/v1.0/users/delete/<int:user_id>', methods=['GET'])
+@userBP.route('/api/v1.0/users/delete/<int:user_id>', methods=['POST'])
 def delete_user(user_id):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('DELETE FROM userTable WHERE id = %s', user_id)
+        cursor.execute('DELETE FROM userTable WHERE id = %s', [user_id])
         cursor.connection.commit()
         resp = jsonify('Done!')
         resp.status_code = 200

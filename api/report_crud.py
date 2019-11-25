@@ -25,7 +25,7 @@ def get_reports():
 def get_reports_by_id(report_id):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('SELECT * from reporttable WHERE id = %s', report_id)
+        cursor.execute('SELECT * from reporttable WHERE id = %s', [report_id])
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
@@ -40,7 +40,7 @@ def get_reports_by_id(report_id):
 def get_reports_by_text(report_text):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('SELECT * FROM reportTable WHERE text LIKE %s', ('%' + report_text + '%'))
+        cursor.execute('SELECT * FROM reportTable WHERE text LIKE %s', ['%' + report_text + '%'])
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
@@ -99,11 +99,11 @@ def update_report():
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/delete/<int:report_id>', methods=['GET'])
+@reportBP.route('/api/v1.0/reports/delete/<int:report_id>', methods=['POST'])
 def delete_report(report_id):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('DELETE FROM reporttable WHERE id = %s', report_id)
+        cursor.execute('DELETE FROM reporttable WHERE id = %s', [report_id])
         cursor.connection.commit()
         resp = jsonify('Done!')
         resp.status_code = 200
@@ -118,7 +118,7 @@ def delete_report(report_id):
 def get_reports_by_user(user_id):
     cursor = mysql.connection.cursor()
     try:
-        cursor.execute('SELECT B.* FROM reportTable B WHERE B.userTable_id = (SELECT A.id FROM usertable A WHERE A.id = %s)',user_id)
+        cursor.execute('SELECT B.* FROM reportTable B WHERE B.userTable_id = (SELECT A.id FROM usertable A WHERE A.id = %s)', [user_id])
         rows = cursor.fetchall()
         resp = jsonify(rows)
         resp.status_code = 200
