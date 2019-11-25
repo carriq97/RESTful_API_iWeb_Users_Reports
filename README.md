@@ -2,8 +2,9 @@
 Web Engineering REST project 2019/2020, UMA University
 
 Instructions:
+
     - DB config is in app.py (avoiding circular dependencies), change it if needed
-    - To keep the api running just type: flask run
+    - To keep the api running just type: 'flask run'
 
 
 **Useful stuff for the team**
