@@ -5,8 +5,16 @@ import requests
 openDataBP = Blueprint('openData', __name__)
 openDataURL = "https://datosabiertos.malaga.eu/recursos/aparcamientos/ocupappublicosmun/ocupappublicosmunfiware.json"
 
+# Search all the parkings
+@openDataBP.route('/api/v1/openData/parkings', methods=['GET'])
+def parkingsSearch():
+    response = requests.get(openDataURL)
+    data = response.json()
+    return jsonify(data)
 
-@openDataBP.route('/api/v1/openData/<int:park_id>')
+
+# Search by parking id
+@openDataBP.route('/api/v1/openData/<int:park_id>', methods=['GET'])
 def idSearch(park_id):
     response = requests.get(openDataURL)
     data = response.json()
@@ -16,7 +24,8 @@ def idSearch(park_id):
         return not_found
 
 
-@openDataBP.route('/api/v1/openData/<string:name>')
+# Search by parking name
+@openDataBP.route('/api/v1/openData/<string:name>', methods=['GET'])
 def nameSearch(name):
     response = requests.get(openDataURL)
     data = response.json()
