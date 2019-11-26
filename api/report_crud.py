@@ -6,7 +6,7 @@ from api.error_handler import not_found
 reportBP = Blueprint('report', __name__)
 
 
-@reportBP.route('/api/v1.0/reports', methods=['GET'])
+@reportBP.route('/api/v1/reports', methods=['GET'])
 def get_reports():
     cursor = mysql.connection.cursor()
     try:
@@ -21,7 +21,7 @@ def get_reports():
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/<int:report_id>', methods=['GET'])
+@reportBP.route('/api/v1/reports/<int:report_id>', methods=['GET'])
 def get_reports_by_id(report_id):
     cursor = mysql.connection.cursor()
     try:
@@ -36,7 +36,7 @@ def get_reports_by_id(report_id):
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/text/<string:report_text>', methods=['GET'])
+@reportBP.route('/api/v1/reports/text/<string:report_text>', methods=['GET'])
 def get_reports_by_text(report_text):
     cursor = mysql.connection.cursor()
     try:
@@ -51,7 +51,7 @@ def get_reports_by_text(report_text):
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/add', methods=['POST'])
+@reportBP.route('/api/v1/reports/add', methods=['POST'])
 def create_report():
     cursor = mysql.connection.cursor()
     try:
@@ -75,7 +75,7 @@ def create_report():
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/update', methods=['POST'])
+@reportBP.route('/api/v1/reports/update', methods=['POST'])
 def update_report():
     cursor = mysql.connection.cursor()
     try:
@@ -99,7 +99,7 @@ def update_report():
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/delete/<int:report_id>', methods=['POST'])
+@reportBP.route('/api/v1/reports/delete/<int:report_id>', methods=['POST'])
 def delete_report(report_id):
     cursor = mysql.connection.cursor()
     try:
@@ -114,7 +114,7 @@ def delete_report(report_id):
         cursor.close()
 
 
-@reportBP.route('/api/v1.0/reports/user/<string:user_id>', methods=['GET'])
+@reportBP.route('/api/v1/reports/user/<string:user_id>', methods=['GET'])
 def get_reports_by_user(user_id):
     cursor = mysql.connection.cursor()
     try:

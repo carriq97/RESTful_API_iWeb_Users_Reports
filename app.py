@@ -3,6 +3,7 @@ from dbconfig import mysql
 from api.report_crud import reportBP
 from api.user_crud import userBP
 from api.error_handler import errorBP
+from api.openData import openDataBP
 
 
 application = Flask(__name__)
@@ -18,3 +19,4 @@ mysql.init_app(application)
 application.register_blueprint(reportBP)
 application.register_blueprint(userBP)
 application.register_blueprint(errorBP)
+application.register_blueprint(openDataBP)
