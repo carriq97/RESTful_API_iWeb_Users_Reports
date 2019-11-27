@@ -25,14 +25,19 @@ def idSearch(loc_id):
         return not_found()
 
 
-# Search by parking name
+# Search by parking name (return a list of locations)
 @locationBP.route('/api/v1/openData/location/<string:name>', methods=['GET'])
 def nameSearch(name):
     response = requests.get(openDataURL)
     data = response.json()
+    resList = []
     for item in data['features']:
-        if item['properties']['name'] == name:
-            return jsonify(item)
+        if name in item['properties']['name']:
+            resList.append(item)
 
-    return not_found()
+    if len(resList) == 0:
+        return not_found()
+    else:
+        return jsonify(resList)
+
 
