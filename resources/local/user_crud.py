@@ -1,4 +1,4 @@
-from api.error_handler import not_found
+from resources.error_handler import not_found
 from dbconfig import mysql
 from flask import jsonify, request, Blueprint
 
@@ -6,7 +6,7 @@ from flask import jsonify, request, Blueprint
 userBP = Blueprint('user', __name__)
 
 
-@userBP.route('/api/v1/users', methods=['GET'])
+@userBP.route('/local/v1/users', methods=['GET'])
 def get_users():
     cursor = mysql.connection.cursor()
     try:
@@ -21,7 +21,7 @@ def get_users():
         cursor.close()
 
 
-@userBP.route('/api/v1/users/<int:user_id>', methods=['GET'])
+@userBP.route('/local/v1/users/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
     cursor = mysql.connection.cursor()
     try:
@@ -36,7 +36,7 @@ def get_user_by_id(user_id):
         cursor.close()
 
 
-@userBP.route('/api/v1/users/paramSearch/email/<string:user_email>', methods=['GET'])
+@userBP.route('/local/v1/users/paramSearch/email/<string:user_email>', methods=['GET'])
 def get_user_by_email(user_email):
     cursor = mysql.connection.cursor()
     try:
@@ -51,7 +51,7 @@ def get_user_by_email(user_email):
         cursor.close()
 
 
-@userBP.route('/api/v1/users/paramSearch/text/<string:user_text>', methods=['GET'])
+@userBP.route('/local/v1/users/paramSearch/text/<string:user_text>', methods=['GET'])
 def get_user_by_text(user_text):
     cursor = mysql.connection.cursor()
     try:
@@ -66,7 +66,7 @@ def get_user_by_text(user_text):
         cursor.close()
 
 
-@userBP.route('/api/v1/users/paramSearch/nickname/<string:user_nickname>', methods=['GET'])
+@userBP.route('/local/v1/users/paramSearch/nickname/<string:user_nickname>', methods=['GET'])
 def get_user_by_nickname(user_nickname):
     cursor = mysql.connection.cursor()
     try:
@@ -81,7 +81,7 @@ def get_user_by_nickname(user_nickname):
         cursor.close()
 
 
-@userBP.route('/api/v1/users/add', methods=['POST'])
+@userBP.route('/local/v1/users/add', methods=['POST'])
 def create_user():
     cursor = mysql.connection.cursor()
     try:
@@ -106,7 +106,7 @@ def create_user():
         cursor.close()
 
 
-@userBP.route('/api/v1/users/update', methods=['POST'])
+@userBP.route('/local/v1/users/update', methods=['POST'])
 def update_user():
     cursor = mysql.connection.cursor()
     try:
@@ -131,7 +131,7 @@ def update_user():
         cursor.close()
 
 
-@userBP.route('/api/v1/users/delete/<int:user_id>', methods=['POST'])
+@userBP.route('/local/v1/users/delete/<int:user_id>', methods=['POST'])
 def delete_user(user_id):
     cursor = mysql.connection.cursor()
     try:

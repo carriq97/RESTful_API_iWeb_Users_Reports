@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint
-from api.error_handler import not_found
+from resources.error_handler import not_found
 import requests
 
 
@@ -8,14 +8,14 @@ openDataURL = 'https://datosabiertos.malaga.eu/recursos/aparcamientos/ubappublic
 
 
 # Search the location of all parkings
-@locationBP.route('/api/v1/openData/locations', methods=['GET'])
+@locationBP.route('/local/v1/openData/locations', methods=['GET'])
 def searchLocations():
     response = requests.get(openDataURL)
     data = response.json()
     return jsonify(data)
 
 # Search location of a parking (they share the same id)
-@locationBP.route('/api/v1/openData/location/<int:loc_id>', methods=['GET'])
+@locationBP.route('/local/v1/openData/location/<int:loc_id>', methods=['GET'])
 def idSearch(loc_id):
     response = requests.get(openDataURL)
     data = response.json()
@@ -26,7 +26,7 @@ def idSearch(loc_id):
 
 
 # Search by parking name (return a list of locations)
-@locationBP.route('/api/v1/openData/location/<string:name>', methods=['GET'])
+@locationBP.route('/local/v1/openData/location/<string:name>', methods=['GET'])
 def nameSearch(name):
     response = requests.get(openDataURL)
     data = response.json()

@@ -1,10 +1,10 @@
 from flask import Flask
 from dbconfig import mysql
-from api.report_crud import reportBP
-from api.user_crud import userBP
-from api.error_handler import errorBP
-from api.parking_openData import parkingBP
-from api.location_openData import locationBP
+from resources.error_handler import errorBP
+from resources.local.report_crud import reportBP
+from resources.local.user_crud import userBP
+from resources.online.parking_openData import parkingBP
+from resources.online.location_openData import locationBP
 
 
 application = Flask(__name__)
@@ -17,8 +17,10 @@ application.config['MYSQL_HOST'] = '127.0.0.1'
 mysql.init_app(application)
 
 # Blueprints
+application.register_blueprint(errorBP)
+
 application.register_blueprint(reportBP)
 application.register_blueprint(userBP)
-application.register_blueprint(errorBP)
+
 application.register_blueprint(parkingBP)
 application.register_blueprint(locationBP)
