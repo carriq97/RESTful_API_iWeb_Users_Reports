@@ -8,14 +8,14 @@ openDataURL = 'https://datosabiertos.malaga.eu/recursos/aparcamientos/ubappublic
 
 
 # Search the location of all parkings
-@locationBP.route('/local/v1/openData/locations', methods=['GET'])
+@locationBP.route('/api/v1/openData/locations', methods=['GET'])
 def searchLocations():
     response = requests.get(openDataURL)
     data = response.json()
     return jsonify(data)
 
 # Search location of a parking (they share the same id)
-@locationBP.route('/local/v1/openData/location/<int:loc_id>', methods=['GET'])
+@locationBP.route('/api/v1/openData/location/<int:loc_id>', methods=['GET'])
 def idSearch(loc_id):
     response = requests.get(openDataURL)
     data = response.json()
@@ -26,7 +26,7 @@ def idSearch(loc_id):
 
 
 # Search by parking name (return a list of locations)
-@locationBP.route('/local/v1/openData/location/<string:name>', methods=['GET'])
+@locationBP.route('/api/v1/openData/location/<string:name>', methods=['GET'])
 def nameSearch(name):
     response = requests.get(openDataURL)
     data = response.json()
