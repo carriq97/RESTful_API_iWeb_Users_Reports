@@ -2,86 +2,52 @@ from resources.error_handler import not_found
 from dbconfig import mysql
 from flask import jsonify, request, Blueprint
 
+from resources.models.user import User
 
 userBP = Blueprint('user', __name__)
 
 
-@userBP.route('/api/v1/users', methods=['GET'])
+def parse_users(user_list):
+    resp_data = []
+    for u in user_list:
+        resp_data.append({"id": u.id, "data": {"id": u.id, "username": u.username, "name": u.name, "email": u.email,
+                                               "admin": u.admin_flag}})
+    return resp_data
+
+
+@userBP.route('/local/v1/users', methods=['GET'])
 def get_users():
-    cursor = mysql.connection.cursor()
-    try:
-        cursor.execute('SELECT * from usertable')
-        rows = cursor.fetchall()
-        resp = jsonify(rows)
-        resp.status_code = 200
-        return resp
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
+    users = User.query.all()
+    resp = jsonify(parse_users(users))
+    resp.status_code = 200
+    return resp
 
 
-@userBP.route('/api/v1/users/<int:user_id>', methods=['GET'])
+@userBP.route('/local/v1/users/<int:user_id>', methods=['GET'])
 def get_user_by_id(user_id):
-    cursor = mysql.connection.cursor()
-    try:
-        cursor.execute('SELECT * from usertable WHERE id = %s', [user_id])
-        rows = cursor.fetchall()
-        resp = jsonify(rows)
-        resp.status_code = 200
-        return resp
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
+    user = User.query.get(user_id)
+    resp = jsonify(id=user.id, username=user.username, name=user.name, email=user.email, admin_flag=user.admin_flag)
+    resp.status_code = 200
+    return resp
 
 
-@userBP.route('/api/v1/users/paramSearch/email/<string:user_email>', methods=['GET'])
+@userBP.route('/local/v1/users/paramSearch/email/<string:user_email>', methods=['GET'])
 def get_user_by_email(user_email):
-    cursor = mysql.connection.cursor()
-    try:
-        cursor.execute('SELECT * FROM userTable WHERE email = %s', [user_email])
-        rows = cursor.fetchall()
-        resp = jsonify(rows)
-        resp.status_code = 200
-        return resp
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
+    user = User.query.get(str(user_email))
+    resp = jsonify(id=user.id, username=user.username, name=user.name, email=user.email, admin_flag=user.admin_flag)
+    resp.status_code = 200
+    return resp
 
 
-@userBP.route('/api/v1/users/paramSearch/text/<string:user_text>', methods=['GET'])
-def get_user_by_text(user_text):
-    cursor = mysql.connection.cursor()
-    try:
-        cursor.execute('SELECT * FROM userTable WHERE nickname LIKE %s', ['%' + user_text + '%'])
-        rows = cursor.fetchall()
-        resp = jsonify(rows)
-        resp.status_code = 200
-        return resp
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-
-
-@userBP.route('/api/v1/users/paramSearch/nickname/<string:user_nickname>', methods=['GET'])
+@userBP.route('/local/v1/users/paramSearch/nickname/<string:user_nickname>', methods=['GET'])
 def get_user_by_nickname(user_nickname):
-    cursor = mysql.connection.cursor()
-    try:
-        cursor.execute("SELECT * FROM userTable WHERE nickname = %s", [user_nickname])
-        rows = cursor.fetchone()
-        resp = jsonify(rows)
-        resp.status_code = 200
-        return resp
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
+    user = User.query.get(str(user_nickname))
+    resp = jsonify(id=user.id, username=user.username, name=user.name, email=user.email, admin_flag=user.admin_flag)
+    resp.status_code = 200
+    return resp
 
 
-@userBP.route('/api/v1/users/add', methods=['POST'])
+@userBP.route('/local/v1/users/add', methods=['POST'])
 def create_user():
     cursor = mysql.connection.cursor()
     try:
@@ -106,7 +72,7 @@ def create_user():
         cursor.close()
 
 
-@userBP.route('/api/v1/users/update', methods=['POST'])
+@userBP.route('/local/v1/users/update', methods=['POST'])
 def update_user():
     cursor = mysql.connection.cursor()
     try:
@@ -131,7 +97,7 @@ def update_user():
         cursor.close()
 
 
-@userBP.route('/api/v1/users/delete/<int:user_id>', methods=['POST'])
+@userBP.route('/local/v1/users/delete/<int:user_id>', methods=['POST'])
 def delete_user(user_id):
     cursor = mysql.connection.cursor()
     try:
@@ -144,5 +110,3 @@ def delete_user(user_id):
         print(e)
     finally:
         cursor.close()
-
-
