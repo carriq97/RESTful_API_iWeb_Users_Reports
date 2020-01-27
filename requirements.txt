@@ -1,6 +1,6 @@
 Flask
-Flask-MySQLdb
 mysqlclient
 social-auth-app-flask
 flask-login
 social-auth-app-flask-sqlalchemy
+flask-sqlalchemy
